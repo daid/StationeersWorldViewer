@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Stationeers 3D Map</title>
+    <style>
+      body { margin: 0; }
+    </style>
+  </head>
+  <body>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="main.js"></script>
+    <div style="position: absolute; top: 0px; left: 0px; z-index: 100">
+      <select id="worldSelect"></select>
+      <select id="worldQuality"><option>6</option><option>5</option><option>4</option><option>3</option></select>
+    </div>
+  </body>
+</html>
