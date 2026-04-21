@@ -153,8 +153,8 @@ public:
     void saveCustom(std::string filename)
     {
         std::vector<Vector3f> positions;
-        std::vector<uint16_t> indices;
-        std::unordered_map<uint32_t, std::vector<uint16_t>> vertex_lookup;
+        std::vector<uint32_t> indices;
+        std::unordered_map<uint32_t, std::vector<uint32_t>> vertex_lookup;
 
         for(auto p : points)
         {
@@ -187,7 +187,14 @@ public:
         u32 = indices.size();
         fwrite(&u32, 1, 4, f);
         fwrite(positions.data(), sizeof(Vector3f), positions.size(), f);
-        fwrite(indices.data(), sizeof(uint16_t), indices.size(), f);
+        if (positions.size() <= 0xFFFF) {
+            std::vector<uint16_t> indices_u16;
+            indices_u16.reserve(indices.size());
+            for(auto idx : indices) indices_u16.push_back(idx);
+            fwrite(indices_u16.data(), sizeof(uint16_t), indices_u16.size(), f);
+        } else {
+            fwrite(indices.data(), sizeof(uint32_t), indices.size(), f);
+        }
         fclose(f);
     }
 };

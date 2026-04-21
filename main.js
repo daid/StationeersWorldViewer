@@ -89,7 +89,11 @@ async function showWorld()
             const info = new Uint32Array(buffer, 0, 2);
             const geometry = new THREE.BufferGeometry();
             geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(buffer, 8, info[0] * 3), 3));
-            geometry.setIndex(new THREE.BufferAttribute(new Uint16Array(buffer, 8 + 12 * info[0], info[1]), 1));
+            if (info[0] > 0xFFFF) {
+                geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(buffer, 8 + 12 * info[0], info[1]), 1));
+            } else {
+                geometry.setIndex(new THREE.BufferAttribute(new Uint16Array(buffer, 8 + 12 * info[0], info[1]), 1));
+            }
             //geometry.computeVertexNormals();
             const mesh = new THREE.Mesh(geometry, material);
             if (world_id != document.getElementById("worldSelect").value) return;

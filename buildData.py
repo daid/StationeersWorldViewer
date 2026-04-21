@@ -68,12 +68,12 @@ for base_path in base_paths:
                         locale[record.find("Key").text] = record.find("Value").text
 
 for sl in start_locations.values():
-    sl['name'] = locale[sl['name']]
+    sl['name'] = locale.get(sl['name'], sl['name'])
     sl['x'] = float(sl['x'])
     sl['y'] = float(sl['y'])
 
 for world_id, world in worlds.items():
-    world['name'] = locale[world['name']]
+    world['name'] = locale.get(world['name'], world['name'])
     world['start_positions'] = [
         start_locations[s] for s in world['start_positions']
     ]
