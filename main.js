@@ -23,6 +23,7 @@ scene.add(light2);
 scene.add(light2.target);
 
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.zoomToCursor = true;
 controls.target.set(2048, 128, 2048);
 controls.rotateUp(1);
 controls.update();
@@ -146,3 +147,22 @@ function makeLabelCanvas(size, name) {
  
   return ctx.canvas;
 }
+
+
+var has_clicked = false;
+document.body.onclick = function(e) {
+    if (!has_clicked) return;
+    if (e.target != renderer.domElement) return;
+    var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,
+                                    -( event.clientY / window.innerHeight ) * 2 + 1,
+                                    0.5 );
+    var raycaster =  new THREE.Raycaster();
+    raycaster.setFromCamera( mouse3D, camera );
+     var intersects = raycaster.intersectObjects(world_meshes);
+    if (intersects.length > 0) {
+        controls.target = intersects[0].point
+        controls.update();
+    }
+}
+document.body.onmousedown = function(e) { has_clicked = true; }
+document.body.onmousemove = function(e) { if (e.buttons) has_clicked = false; }
